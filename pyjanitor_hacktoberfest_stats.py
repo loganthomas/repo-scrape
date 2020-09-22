@@ -1,12 +1,11 @@
 # Standard libraries
-import requests
 from pathlib import Path
 from datetime import datetime
 from collections import Counter
 from typing import List, Dict, Any, Tuple
 
 # Third-party libraries
-
+import requests
 import pandas as pd
 import plotly.graph_objects as go
 from tqdm import tqdm
