@@ -15,6 +15,32 @@ from plotly import subplots, offline
 
 # TODOS
 # - Unit tests
+# - Setup pipeline on GitHub
+
+
+def _setup_data_dir() -> None:
+    """
+    Helper function to create necessary data directory and files.
+    """
+    data_dir = Path("data/")
+
+    if not data_dir.exists():
+        print(f"\nCreating data directory: {data_dir}")
+        data_dir.mkdir()
+        empty_df = pd.DataFrame(
+            columns=[
+                "issues_open",
+                "issues_closed",
+                "issues_total",
+                "prs_open",
+                "prs_closed",
+                "prs_total",
+                "hacktoberfest_issues_open",
+                "hacktoberfest_issues_closed",
+                "hacktoberfest_issues_total",
+            ]
+        )
+        empty_df.to_csv(data_dir.joinpath("pyjanitor_hacktoberfest_2020.csv"))
 
 
 def _get_total_page_count(url: str) -> int:
@@ -404,8 +430,12 @@ def create_hacktoberfest_plot(
 
 def main() -> None:
     START = datetime.now()
+
+    _setup_data_dir()
+
     URL = "https://api.github.com/repos/ericmjl/pyjanitor/issues"
-    PREV_DATA_PATH = Path("pyjanitor_hacktoberfest_2020.csv")
+    PREV_DATA_PATH = Path("data/pyjanitor_hacktoberfest_2020.csv")
+    PLOT_DATA_PATH = Path("data/pyjanitor_hacktoberfest_stats.html")
 
     print("\nScrapping GitHub to find total number of pages...")
     page_cnt = _get_total_page_count(url=URL)
@@ -446,9 +476,7 @@ def main() -> None:
     print("\nCreating final Hacktoberfest Plot...")
     hacktoberfest_fig = create_hacktoberfest_plot(current_cnt_df=current_cnt_df)
 
-    offline.plot(
-        hacktoberfest_fig, filename="pyjanitor_hacktoberfest_stats.html", auto_open=True
-    )
+    offline.plot(hacktoberfest_fig, filename=PLOT_DATA_PATH.as_posix(), auto_open=True)
     print(f"\n Complete: {datetime.now() - START}")
 
 
