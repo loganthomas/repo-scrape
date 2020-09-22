@@ -15,6 +15,7 @@ from plotly import subplots, offline
 
 # TODOS
 # - Unit tests
+# - Setup pipeline on GitHub
 
 
 def _setup_data_dir() -> None:
