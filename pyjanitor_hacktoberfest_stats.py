@@ -127,7 +127,7 @@ def create_metadata_df(scraped_data: List[Dict[str, Any]]) -> pd.DataFrame:
 
     df = df.assign(labels=df["labels"].apply(lambda x: [d.get("name") for d in x]))
     df = df.assign(
-        hacktober=df["labels"].apply(lambda x: "hacktoberfest-2020" in x).astype(int)
+        hacktober=df["labels"].apply(lambda x: "hacktoberfest" in x).astype(int)
     )
 
     return df
